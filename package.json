@@ -2,7 +2,7 @@
   "name": "jxp",
   "version": "1.0.0",
   "description": "command line json explorer",
-  "main": "./src/command.js",
+  "main": "./src/explorable.js",
   "scripts": {
     "test": "node ./test/test.js"
   },
