@@ -1,22 +1,44 @@
 const execSync = require('child_process').execSync;
 const cp = require('child_process')
+const colours = require('./colours')
+
 const shell = (cmd) => cp.execSync(cmd, {'encoding': 'utf-8'})
 
+var anyTestFailed = false
 const test = (msg, val, func) => {
-    console.log(msg)
+    console.log(colours.FgWhite + msg)
     try {
-        var output = func()
+        if(typeof func == 'string')
+            var output = shell(func)
+        if(typeof func == 'function')
+            var output = func()
         var result = output == val
+        anyTestFailed = anyTestFailed | !result
+        
     } catch(err) {
-        console.error(err)
+        console.log(colours.FgRed + err)
         result = false
+        anyTestFailed = true
     }
-    var passFail = result?'test passed':'test failed: '+output
+    var passFail = result?colours.FgGreen+'test passed':colours.FgRed+'test failed: '+output
     console.log(passFail + '\n')
     return result
 }
 
-shell('curl jsonplaceholder.typicode.com/users > users.json')
+shell('curl -s jsonplaceholder.typicode.com/users > usr.json')
 
-test('get string 1 deep', 'Array[10]', () => 
-    shell('cat users.json | jxp'))
+test('object root', 'Array[10]\n', 'cat usr.json | jxp')
+test('third address', `street: "Hoeger Mall"
+suite: "Apt. 692"
+city: "South Elvis"
+zipcode: "53919-4257"
+geo: Object{lat,lng}
+`, 'cat usr.json | jxp 3.address')
+test('third address geo as json', '{"lat":"29.4572","lng":"-164.2990"}\n', 
+    'cat usr.json | jxp -j 3.address.geo')
+test('throws error on nonexistent value', 'error: could not find key null\n', 
+    'cat usr.json | jxp -j 3.null')
+// stest('fail!', 3, ()=>{})
+
+if(!anyTestFailed)
+    console.log(colours.FgBlue+'--------------\nall tests passed #pog')
