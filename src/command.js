@@ -1,4 +1,4 @@
-#!/usr/bin/node1
+#!/usr/bin/node
 
 const fs = require('fs')
 const Explorable = require('./explorable.js').Explorable
@@ -28,12 +28,6 @@ const getFlags = () => {
     return flags
 }
 var flags = getFlags()
-if(flags.includes('--help') || flags.includes('-h')) {
-    var helpFile = fs.readFileSync('readme.md').toString()
-    console.log(helpFile)
-    process.exit(0)
-}
-
 try { var input = JSON.parse(stdin) }
 catch { 
     console.log('error: could not make json')

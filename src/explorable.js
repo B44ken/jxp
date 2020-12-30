@@ -18,20 +18,25 @@ class Explorable {
         else return this.formatObject(inDelve)
     }
     formatObject(object) {
-        if(Array.isArray(object))
-            return 'Array[' + object.length + ']'
-        if(typeof object != 'object')
-            return JSON.stringify(object)
+        if(Array.isArray(object) | typeof object != 'object')
+            return this.formatValue(object)
+
         var keyList = []
-        for(var key of Object.keys(object)) { 
-            if(Array.isArray(object[key]))
-                var value = 'Array[' + object[key].length + ']'
-            else if(typeof object[key] == 'object')
-                var value = 'Object{' + Object.keys(object[key]) + '}'
-            else var value = JSON.stringify(object[key])
-            keyList.push(key + ': ' + value)
-        }
+        for(var key of Object.keys(object))  
+                keyList.push(key + ': ' + this.formatValue(object[key]))
         return keyList.join('\n')
+    }
+    formatValue(object) {
+        if(object == null)
+            return null
+
+        else if(Array.isArray(object))
+            return 'Array[' + object.length + ']'
+
+        else if(typeof object == 'object')
+            return 'Object{' + Object.keys(object) + '}'
+
+        return JSON.stringify(object)
     }
 }
 
