@@ -2,7 +2,7 @@ const execSync = require('child_process').execSync;
 const cp = require('child_process')
 const colours = require('./colours')
 
-const shell = (cmd) => cp.execSync(cmd, {'encoding': 'utf-8'})
+const shell = cmd => cp.execSync(cmd, {'encoding': 'utf-8'})
 
 var anyTestFailed = false
 const test = (msg, val, func) => {
@@ -25,7 +25,7 @@ const test = (msg, val, func) => {
     return result
 }
 
-shell('curl -s jsonplaceholder.typicode.com/users > usr.json')
+shell('curl -s jsonplaceholder.typicode.com/users > test/usr.json')
 
 test('object root', 'Array[10]\n', 'cat usr.json | jxp')
 test('third address', `street: "Hoeger Mall"
@@ -35,9 +35,9 @@ zipcode: "53919-4257"
 geo: Object{lat,lng}
 `, 'cat usr.json | jxp 3.address')
 test('third address geo as json', '{"lat":"29.4572","lng":"-164.2990"}\n', 
-    'cat usr.json | jxp -j 3.address.geo')
+    'cat test/usr.json | jxp -j 3.address.geo')
 test('throws error on nonexistent value', 'error: could not find key null\n', 
-    'cat usr.json | jxp -j 3.null')
+    'cat test/usr.json | jxp -j 3.null')
 // stest('fail!', 3, ()=>{})
 
 if(!anyTestFailed)
