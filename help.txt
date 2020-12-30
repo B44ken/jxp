@@ -1,0 +1,3 @@
+jxp | json explorer
+
+    -j    write valid JSON

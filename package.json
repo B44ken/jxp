@@ -1,0 +1,14 @@
+{
+  "name": "jxp",
+  "version": "1.0.0",
+  "description": "command line json explorer",
+  "main": "command.js",
+  "scripts": {
+    "test": "node.exe test.js"
+  },
+  "bin": {
+    "jxp": "./command.js"
+  },
+  "author": "b4",
+  "license": "MIT"
+}
