@@ -27,13 +27,13 @@ const test = (msg, val, func) => {
 
 shell('curl -s jsonplaceholder.typicode.com/users > test/usr.json')
 
-test('object root', 'Array[10]\n', 'cat usr.json | jxp')
+test('object root', 'Array[10]\n', 'cat test/usr.json | jxp')
 test('third address', `street: "Hoeger Mall"
 suite: "Apt. 692"
 city: "South Elvis"
 zipcode: "53919-4257"
 geo: Object{lat,lng}
-`, 'cat usr.json | jxp 3.address')
+`, 'cat test/usr.json | jxp 3.address')
 test('third address geo as json', '{"lat":"29.4572","lng":"-164.2990"}\n', 
     'cat test/usr.json | jxp -j 3.address.geo')
 test('throws error on nonexistent value', 'error: could not find key null\n', 
