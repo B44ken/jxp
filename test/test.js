@@ -6,7 +6,7 @@ const shell = cmd => cp.execSync(cmd, {'encoding': 'utf-8'})
 
 var anyTestFailed = false
 const test = (msg, val, func) => {
-    console.log(colours.FgWhite + msg)
+    var log = colours.FgWhite + msg + '\n'
     try {
         if(typeof func == 'string')
             var output = shell(func)
@@ -16,12 +16,13 @@ const test = (msg, val, func) => {
         anyTestFailed = anyTestFailed | !result
         
     } catch(err) {
-        console.log(colours.FgRed + err)
+        log += colours.FgRed + err
         result = false
         anyTestFailed = true
     }
     var passFail = result?colours.FgGreen+'test passed':colours.FgRed+'test failed: '+output
-    console.log(passFail + '\n')
+    log += passFail + '\n'
+    console.log(log)
     return result
 }
 
