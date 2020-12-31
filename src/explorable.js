@@ -7,8 +7,6 @@ class Explorable {
         var inDelve = this.object
         for(var key of path.split('.')) {
             if(key == '-') break
-            if(key == '%')
-                return this.formatObject(inDelve)
             if(!inDelve[key])
                 return 'error: could not find key ' + key
             inDelve = inDelve[key]
