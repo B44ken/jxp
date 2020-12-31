@@ -1,7 +1,7 @@
 class Explorable {
     constructor(object, useJSON) {
         this.object = object
-        this.useJSON = useJSON
+        this.useJSON = useJSON | false
     }
     delve(path) {
         var inDelve = this.object

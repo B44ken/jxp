@@ -9,7 +9,7 @@ catch {
     process.exit(1)
 }
 const getPath = () => {
-    var noNode = process.argv
+    const noNode = process.argv
         .filter(e => !e.endsWith('node'))
         .filter(e => !e.endsWith('node.exe'))
         .filter(e => !e.startsWith('-'))
@@ -21,7 +21,7 @@ const getPath = () => {
 
 const getFlags = () => {
     var flags = []
-    for(var item of process.argv) {
+    for(const item of process.argv) {
         if(item.startsWith('-'))
             flags += item
     }
@@ -30,10 +30,11 @@ const getFlags = () => {
 var flags = getFlags()
 try { var input = JSON.parse(stdin) }
 catch { 
-    console.log('error: could not make json')
+    console.log('error: could not parse json')
     process.exit(1)
 }
-var useJSON = flags.includes('-j')
-var exp = new Explorable(input, useJSON)
-var out = exp.delve(getPath())
-console.log(out)
+const useJSON = flags.includes('-j')
+const debug = flags.includes('-d')
+const exp = new Explorable(input, useJSON)
+const output = exp.delve(getPath())
+console.log(output)
