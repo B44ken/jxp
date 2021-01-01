@@ -35,7 +35,7 @@ class Explorable {
         else if(typeof object == 'object')
             return 'Object{' + Object.keys(object) + '}'
 
-        return JSON.stringify(object)
+        return String(object)
     }
 }
 

@@ -1,0 +1,5 @@
+street: "Hoeger Mall"
+suite: "Apt. 692"
+city: "South Elvis"
+zipcode: "53919-4257"
+geo: Object{lat,lng}
