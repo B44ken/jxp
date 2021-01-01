@@ -19,7 +19,7 @@ const test = (msg, val, func) => {
         var result = false
         anyTestFailed = true
     }
-    var passFail = result?colours.FgGreen+'test passed':colours.FgRed+'test failed: '+output
+    var passFail = result?colours.FgGreen+'test passed':colours.FgRed+'test failed:\n'+output
     log += passFail + '\n'
     console.log(log)
     return result
@@ -32,7 +32,7 @@ shellTest('object root',
     'Array[10]\n', 
     'cat test/usr.json | jxp')
 shellTest('6th name',
-    'Kurtis Weissnat', 
+    'Kurtis Weissnat\n', 
     'cat test/usr.json | jxp 6.name')
 shellTest('third address object', 
     file('test/3adr.txt'),
