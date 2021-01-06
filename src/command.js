@@ -28,10 +28,11 @@ if(debug) console.log({ flags, argv: process.argv })
 
 const getPath = () => {
     const noNode = process.argv
-        .filter(e => !e.endsWith('node'))
-        .filter(e => !e.endsWith('node.exe'))
+        .filter(e => !e.endsWith('/node'))
+        .filter(e => !e.endsWith('/node.exe'))
         .filter(e => !e.endsWith('command.js'))
         .filter(e => !e.startsWith('-'))
+        .filter(e => e != '/usr/local/bin/jxp')
     if(noNode.length < 1) {
         return '-'
     }
