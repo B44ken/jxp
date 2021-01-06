@@ -46,6 +46,8 @@ shellTest('throws error on nonexistent value',
 shellTest('2-4th users geo (multiple paths)', 
     file('test/24glob.txt'),
     'cat test/usr.json | jxp 2.address.geo 3.address.geo 4.address.geo')
+shellTest('first 3 usernames (raw flag)', 'Bret\nAntonette\nSamantha\n', 
+    'cat test/usr.json | jxp 0.username 1.username 2.username -r')
 
 if(!anyTestFailed)
     console.log(colours.FgBlue+'--------------\nall tests passed #pog')
