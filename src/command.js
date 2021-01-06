@@ -48,13 +48,16 @@ const exp = new Explorable(input, useJSON, debug)
 
 if(debug) console.log({ path: getPath(), pathZero: getPath()[0] })
 
-if(getPath().length > 1) {
+if(getPath().length > 1 && !flags.includes('-r')) {
     for(const path of getPath()) {
         const d = exp.delve(path)
         console.log(path + ': \n' + prepend(d, '	'))
-    }    
+    }
 }
 else {
     var out = exp.delve(getPath()[0])
-    console.log(out)
+    for(const path of getPath()) {
+        console.log(exp.delve(path))
+    }
 }
+process.exit(0)
