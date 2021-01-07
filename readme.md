@@ -1,14 +1,14 @@
 # json explorer | jxp
 jxp is a simple tool for reading large json files in the command lime. it takes in a valid JSON object from STDIN and follows the path given, then prints out a human-readable summary. see examples:
 ```sh
-curl https://jsonplaceholder.typicode.com/users -o users.json
+curl https://jsonplaceholder.typicode.com/users -o usr.json
 cat usr.json | jxp
 # Array[10]
 cat usr.json | jxp 3.address
-# street: "Hoeger Mall"
-# suite: "Apt. 692"
-# city: "South Elvis"
-# zipcode: "53919-4257"
+# street: Hoeger Mall
+# suite: Apt. 692
+# city: South Elvis
+# zipcode: 53919-4257
 # geo: Object{lat,lng}
 ```
 
