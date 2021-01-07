@@ -51,7 +51,7 @@ if(debug) console.log({ path: getPath(), pathZero: getPath()[0] })
 if(getPath().length > 1 && !flags.includes('-r')) {
     for(const path of getPath()) {
         const d = exp.delve(path)
-        console.log(path + ': \n' + prepend(d, '	'))
+        console.log(path + ': \n' + prepend(d, '  '))
     }
 }
 else {
