@@ -1,63 +1,70 @@
-#!/usr/bin/node
+import { Explorable } from './explorable.js' 
 
-const fs = require('fs')
-const Explorable = require('./explorable.js').Explorable
-try { var stdin = fs.readFileSync(0).toString() }
-catch {
-    console.log('error: no stdin (should be json)')
-    process.exit(1)
-}
-try { var input = JSON.parse(stdin) }
-catch { 
-    console.log('error: could not parse json')
-    process.exit(1)
+const check = (msg, test) => {
+    if(test || test == undefined) {
+        console.log('error: ' + msg)
+        Deno.exit(1)
+    }
+    return true
 }
 
-const getFlags = () => {
+const processArgs = (argv) => {
     var flags = []
-    for(const item of process.argv) {
-        if(item.startsWith('-'))
-            flags += item
+    var paths = []
+    for(const arg of argv) {
+        if (arg.endsWith('/deno.exe')
+         || arg.endsWith('/deno')
+         || arg.endsWith('command_deno.js'))
+            continue
+        if (arg.startsWith('-'))
+            flags.push(arg)
+        else
+            paths.push(arg)
+        
     }
-    return flags
-}
-var flags = getFlags()
-const useJSON = flags.includes('-j')
-const debug = flags.includes('-d')
-if(debug) console.log({ flags, argv: process.argv })
-
-const getPath = () => {
-    const noNode = process.argv
-        .filter(e => !e.endsWith('/node'))
-        .filter(e => !e.endsWith('/node.exe'))
-        .filter(e => !e.endsWith('command.js'))
-        .filter(e => !e.startsWith('-'))
-        .filter(e => e != '/usr/local/bin/jxp')
-    if(noNode.length < 1) {
-        return '-'
-    }
-    return noNode
+    return {flags, paths}
 }
 
+const denoStdin = async () => {
+    var stdin = new Uint8Array(1024**2)
+    const bufLen = await Deno.stdin.read(stdin)
+    stdin = stdin.subarray(0, bufLen)
+    stdin = new TextDecoder().decode(stdin)
+    return stdin
+}
+const {flags, paths} = processArgs(Deno.args)
+if(paths.length == 0) paths[0] = '-'
 
-const prepend = (string, pre) => {
-    return string.split('\n').map(s=>pre+s).join('\n')
+var stdin = await denoStdin()
+check('no stdin (should be json)', stdin.length <= 1) 
+
+var exp
+try {
+    var input = JSON.parse(stdin)
+    var exp = new Explorable(input)
+} catch {
+    check('error: could not parse json')
 }
 
-const exp = new Explorable(input, useJSON, debug)
+const prepend = (string, pre) =>
+    string.split('\n').map(s=>pre+s).join('\n')
 
-if(debug) console.log({ path: getPath(), pathZero: getPath()[0] })
-
-if(getPath().length > 1 && !flags.includes('-r')) {
-    for(const path of getPath()) {
+if (flags.includes('-j')) {
+    var list = []
+    for(const path of paths)
+        list.push(exp.delve(path))
+    if(list.length > 1)
+        console.log(JSON.stringify(list))
+    else
+        console.log(JSON.stringify(list[0]))
+}
+else if (!flags.includes('-r')) {
+    for(const path of paths) {
         const d = exp.delve(path)
         console.log(path + ': \n' + prepend(d, '  '))
     }
 }
 else {
-    var out = exp.delve(getPath()[0])
-    for(const path of getPath()) {
+    for(const path of paths)
         console.log(exp.delve(path))
-    }
 }
-process.exit(0)

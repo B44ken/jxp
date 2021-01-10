@@ -1,4 +1,4 @@
-class Explorable {
+export class Explorable {
     constructor(object, useJSON, debug) {
         this.object = object
         this.useJSON = useJSON | false
@@ -38,5 +38,3 @@ class Explorable {
         return String(object)
     }
 }
-
-module.exports.Explorable = Explorable
