@@ -49,22 +49,25 @@ try {
 const prepend = (string, pre) =>
     string.split('\n').map(s=>pre+s).join('\n')
 
+var output = ''
 if (flags.includes('-j')) {
     var list = []
     for(const path of paths)
         list.push(exp.delve(path))
     if(list.length > 1)
-        console.log(JSON.stringify(list))
+        output += JSON.stringify(list)
     else
-        console.log(JSON.stringify(list[0]))
+        output += JSON.stringify(list[0])
 }
-else if (!flags.includes('-r')) {
+else if(!flags.includes('-r') && paths.length > 1) {
     for(const path of paths) {
         const d = exp.delve(path)
-        console.log(path + ': \n' + prepend(d, '  '))
+        output += path + ': \n' + prepend(d, '  ')
     }
 }
 else {
     for(const path of paths)
-        console.log(exp.delve(path))
+        output += exp.delve(path)
 }
+
+console.log(output)
