@@ -1,6 +1,9 @@
-import * as colours from './colours.js'
-import { exec } from "https://deno.land/x/exec/mod.ts";
+const execSync = require('child_process').execSync;
+const cp = require('child_process')
+const fs = require('fs')
+const colours = require('./colours')
 
+const shell = c => cp.execSync(c, {'encoding': 'utf-8'})
 const file = f => fs.readFileSync(f, {'encoding': 'utf8'})
 
 var anyTestFailed = false
@@ -21,10 +24,9 @@ const test = (msg, val, func) => {
     console.log(log)
     return result
 }
-const shellTest = (msg, val, func) => test(msg, val, () => exec(func))
+const shellTest = (msg, val, func) => test(msg, val, () => shell(func))
 
 shell('curl -s jsonplaceholder.typicode.com/users > test/usr.json')
-shell('alias jxp="deno run src/command.js"')
 
 shellTest('object root', 
     'Array[10]\n', 
