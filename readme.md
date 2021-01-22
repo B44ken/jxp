@@ -1,4 +1,6 @@
 # json explorer | jxp
+#### note: jxp is in the midst of a deno port (10x faster), see `deno` branch
+
 jxp is a simple tool for reading large json files in the command lime. it takes in a valid JSON object from STDIN and follows the path given, then prints out a human-readable summary. see examples:
 ```sh
 curl https://jsonplaceholder.typicode.com/users -o usr.json
